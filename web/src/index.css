@@ -1,0 +1,13 @@
+/* Import Tailwind directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Optional: Define base layer styles or shadcn/ui theme variables */
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+    @apply min-h-screen font-sans antialiased; /* Example base body styles */
+  }
+  /* Add root/dark variables for shadcn/ui themes here if needed later */
+}

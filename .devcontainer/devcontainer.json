@@ -1,0 +1,44 @@
+{
+  "name": "Strive Frontend Dev Container",
+  "dockerComposeFile": ["../docker-compose.yml"],
+  "service": "frontend",
+  "workspaceFolder": "/app",
+  "remoteUser": "node",
+  "forwardPorts": [5173],
+
+  // --- Lifecycle Scripts ---
+  // Installs dependencies AFTER container is created but BEFORE VS Code fully attaches.
+  // Includes 'sudo chown' fix and adds explicit check before npx.
+      // Installs dependencies AFTER container is created but BEFORE VS Code fully attaches.
+      // Separates Tailwind install step for isolation. Includes cache clean, chown, check.
+      "postCreateCommand": "sudo chown -R node:node /app/node_modules || true && \
+      npm cache clean --force && rm -f package-lock.json && \
+      echo '>>> Installing base deps...' && npm install --legacy-peer-deps && \
+      echo '>>> Installing Tailwind v4+, CLI, PostCSS, Autoprefixer, other deps...' && \
+      npm install -D tailwindcss @tailwindcss/cli postcss autoprefixer @types/node tailwindcss-animate && \
+      echo '>>> Installing runtime deps (cva, clsx, etc)...' && \
+      npm install class-variance-authority clsx tailwind-merge lucide-react",
+  // Optional: Commands after VS Code attaches
+  // "postAttachCommand": "echo 'VS Code attached! Environment setup complete via postCreateCommand.'",
+
+  // --- VS Code Customizations ---
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "terminal.integrated.profiles.linux": { "bash": { "path": "/bin/bash" } },
+        "files.eol": "\n",
+        "files.associations": { "*.css": "tailwindcss" },
+        "editor.quickSuggestions": { "strings": "on" }
+      },
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "ms-azuretools.vscode-docker",
+        "ms-vscode-remote.remote-containers",
+        "github.vscode-github-actions"
+      ]
+    }
+  }
+}
